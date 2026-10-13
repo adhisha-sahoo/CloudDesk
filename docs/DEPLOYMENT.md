@@ -1,5 +1,13 @@
 # Publish to GitHub using free resources
 
+## Published deployment
+
+- Source: [adhisha-sahoo/AIproject](https://github.com/adhisha-sahoo/AIproject).
+- Demo: [CloudDesk on GitHub Pages](https://adhisha-sahoo.github.io/AIproject/#overview).
+- [Successful deployment run #2](https://github.com/adhisha-sahoo/AIproject/actions/runs/38459573350).
+
+The source was published through GitHub's Git tree/commit/ref APIs. Pages uses the repository's GitHub Actions workflow and deploys after verification succeeds. The deployed browser was checked for request creation, plan approval, cleanup, and cited runbook retrieval. These interactions are explicitly labeled simulations.
+
 ## What will be hosted
 
 A **public repository** can host the browser demonstration on GitHub Pages with GitHub Free. Pages serves static HTML/CSS/JavaScript; Python, Jenkins, and the AWS emulator run on your computer. The public site does not include credentials or connect to your local infrastructure.

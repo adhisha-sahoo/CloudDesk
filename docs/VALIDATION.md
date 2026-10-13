@@ -28,17 +28,29 @@ The Python suite exercises:
 - Jenkins API queue/build/artifact contracts, foreign URL refusal, and timeout cancellation;
 - ServiceNow correlation lookup, creation, and update contracts.
 
-## Not executed live here
+## GitHub Actions evidence
+
+[Verify CloudDesk run #2](https://github.com/adhisha-sahoo/AIproject/actions/runs/38459400921) passed all three jobs on the published source commit `b3c6980f235887a5d861ce58b40e97bc888d7118`:
+
+- **test**: 50 Python tests passed, two environment-gated tests skipped; lint, formatting, two JavaScript behavior tests, module syntax, and the static-site build passed.
+- **browser**: the authenticated Chromium workflow passed against the running local backend.
+- **terraform**: configuration initialization/validation and both Terraform tests passed, including actual saved-plan creation, apply, ownership/security verification, interrupted-apply retry, and destroy against Moto.
+
+The AWS provider is pinned to **5.100.0** because Moto **5.2.4** implements `PutBucketTagging` but does not persist tags supplied on `CreateBucket`. Provider 6.68.0 caused the first integration run to fail ownership verification. Pinning the compatible provider fixes the API mismatch without weakening ownership checks. The generated provider lock file records signed package checksums.
+
+## Public deployment evidence
+
+[Pages deployment run #2](https://github.com/adhisha-sahoo/AIproject/actions/runs/38459573350) succeeded. The [live browser demonstration](https://adhisha-sahoo.github.io/AIproject/#overview) was opened and checked for request creation, plan review, approval, cleanup, and cited runbook search. The site identifies these workflows as browser simulations; its repository link points to the actual published repository. No backend credentials are included in the site.
+
+## External integrations not executed live
 
 | Check | Status and reason |
 | --- | --- |
-| Native Terraform plan/apply/destroy | One test skipped in the final suite. A direct attempt found the workspace disallows the Unix-domain socket required by the AWS Terraform provider: `socket: operation not permitted`. The project includes a standard Linux GitHub Actions job to run this test. |
 | Docker Compose/Jenkins container boot | No Docker daemon was available. The files and API contracts were prepared, but a running Jenkins server/pipeline was not verified here. |
 | Real Slack workspace installation and messaging | No Slack app credentials or workspace identifiers were supplied. HTTP/signature/command behavior was tested without sending real messages. |
 | Local Ollama model inference | No model runtime/download was supplied. HTTP request and model-selection/fallback contracts were tested with deterministic responses. |
 | Live ServiceNow instance | No developer instance or credentials were supplied. Its Table API adapter was contract-tested. |
-| GitHub repository and Pages publication | GitHub installation was confirmed, but the running session did not expose callable GitHub account/publishing tools. No repository creation or successful deployment is claimed. An authenticated API/CLI publisher and Pages workflows are included. |
 
 The dependency stack emitted one upstream TestClient deprecation warning about httpx compatibility; it did not cause test failures.
 
-Run the supplied CI workflows and the integration setup guide before adding claims about live Jenkins, Terraform, Slack, or model inference to a resume. The free local API implementation and public browser demonstration are intentionally distinguished from those external integrations.
+The Terraform executor has been exercised in GitHub Actions against Moto. Follow the integration setup guide before adding claims about live Jenkins, Slack, ServiceNow, or model inference to a resume. The free local API implementation and public browser demonstration are intentionally distinguished from those external integrations.

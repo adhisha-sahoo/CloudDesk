@@ -1,5 +1,7 @@
 # CloudDesk
 
+[Open the live demo](https://adhisha-sahoo.github.io/AIproject/#overview) · [CI verification](https://github.com/adhisha-sahoo/AIproject/actions/workflows/ci.yml)
+
 **Approval-based infrastructure automation, grounded troubleshooting, and an incident replay lab.**
 
 CloudDesk turns a development sandbox request into a reviewed plan, an approved infrastructure change, and a scheduled teardown. It includes a FastAPI backend, a responsive dashboard, Slack integration, a Jenkins/Terraform executor, and a local-model troubleshooting option.

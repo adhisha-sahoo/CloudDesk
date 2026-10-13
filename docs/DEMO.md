@@ -36,4 +36,8 @@ Use only the integrations you personally configured and exercised. A defensible 
 
 "Built an API-first infrastructure request platform with Python/FastAPI, Slack integration, digest-bound approvals, and automated lifecycle management in a local AWS-compatible environment."
 
-Add Jenkins/Terraform and local LLM inference only after running those modes yourself. Report your measured test/request counts and latency; do not turn emulator results into claims of production AWS deployment or enterprise adoption.
+A second supported bullet is:
+
+"Implemented digest-bound Terraform approvals, request idempotency, automatic expiry, and hash-linked audit events; verified API, browser, and Terraform lifecycle behavior through GitHub Actions."
+
+Terraform execution is verified against Moto in CI. Add live Jenkins, Slack workspace usage, ServiceNow, and local LLM inference only after configuring and exercising those integrations yourself. Report your measured test/request counts and latency; do not turn emulator results into claims of production AWS deployment or enterprise adoption.
