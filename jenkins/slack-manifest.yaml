@@ -1,0 +1,24 @@
+display_information:
+  name: CloudDesk
+  description: Approval-based sandbox requests and runbook troubleshooting
+  background_color: "#183b32"
+features:
+  bot_user:
+    display_name: CloudDesk
+    always_online: false
+  slash_commands:
+    - command: /clouddesk
+      description: Request and manage a local development sandbox
+      usage_hint: create NAME duration=30m | status ID | ask QUESTION
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - commands
+      - chat:write
+settings:
+  interactivity:
+    is_enabled: true
+  socket_mode_enabled: true
+  org_deploy_enabled: false
+  token_rotation_enabled: false

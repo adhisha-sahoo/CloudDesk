@@ -1,0 +1,47 @@
+name: Verify CloudDesk
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e '.[dev]'
+      - run: python scripts/check.py
+      - run: node --check site/app.js && node --check site/demo.js
+      - run: node --test tests/test_demo.mjs
+      - run: python scripts/build_site.py && git diff --exit-code -- site/runbooks.json
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e '.[dev]' playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - run: RUN_BROWSER=1 python -m pytest tests/test_browser.py -v
+  terraform:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.13.5'
+          terraform_wrapper: false
+      - run: python -m pip install -e '.[dev]'
+      - run: terraform -chdir=infra fmt -check && terraform -chdir=infra init -backend=false -input=false && terraform -chdir=infra validate
+      - run: RUN_TERRAFORM=1 python -m pytest tests/test_terraform.py -v

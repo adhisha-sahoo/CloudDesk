@@ -1,0 +1,41 @@
+services:
+  moto:
+    image: motoserver/moto:5.2.4
+    ports: ["127.0.0.1:5000:5000"]
+    environment:
+      MOTO_PORT: "5000"
+      S3_IGNORE_SUBDOMAIN_BUCKETNAME: "true"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  app:
+    build: .
+    env_file: .env
+    environment:
+      CLOUDDESK_DATA_DIR: /data
+      CLOUDDESK_EMBEDDED_MOTO: "false"
+      CLOUDDESK_AWS_ENDPOINT: http://moto:5000
+      CLOUDDESK_JENKINS_URL: http://jenkins:8080
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["app-data:/data"]
+    depends_on:
+      moto: {condition: service_healthy}
+  jenkins:
+    profiles: ["jenkins"]
+    build:
+      context: .
+      dockerfile: jenkins/Dockerfile
+    environment:
+      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD:?Run python scripts/bootstrap.py first}
+      CASC_JENKINS_CONFIG: /opt/clouddesk/jenkins/jenkins.yaml
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false
+      CLOUDDESK_AWS_ENDPOINT: http://moto:5000
+    ports: ["127.0.0.1:8080:8080"]
+    volumes: ["jenkins-data:/var/jenkins_home"]
+    depends_on:
+      moto: {condition: service_healthy}
+volumes:
+  app-data:
+  jenkins-data:

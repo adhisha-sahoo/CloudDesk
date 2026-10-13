@@ -1,0 +1,11 @@
+{
+  "name": "clouddesk-browser-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=18"},
+  "scripts": {
+    "test": "node --test tests/test_demo.mjs",
+    "check": "node --check site/app.js && node --check site/demo.js"
+  }
+}

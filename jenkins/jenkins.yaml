@@ -1,0 +1,20 @@
+jenkins:
+  systemMessage: "CloudDesk local infrastructure pipeline. No live AWS endpoints."
+  numExecutors: 1
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: "${JENKINS_ADMIN_PASSWORD}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+unclassified:
+  location:
+    url: "http://jenkins:8080/"
+jobs:
+  - file: /opt/clouddesk/jenkins/jobs.groovy

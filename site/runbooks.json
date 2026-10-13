@@ -1,0 +1,74 @@
+[
+  {
+    "id": "s3-access", "title": "S3 AccessDenied", "keywords": "s3 access denied accessdenied permission bucket object forbidden iam",
+    "source_url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/troubleshoot-403-errors.html",
+    "steps": [
+      {"id": "s3-access-1", "text": "Confirm the request is ACTIVE and the bucket name matches its approved resource output."},
+      {"id": "s3-access-2", "text": "Inspect the role policy: ListBucket uses the bucket ARN; object actions use the bucket ARN followed by /*."},
+      {"id": "s3-access-3", "text": "On real AWS, inspect explicit denies in identity policies, bucket policies, permissions boundaries, and organization policies. Moto does not prove IAM enforcement."}
+    ]
+  },
+  {
+    "id": "jenkins-failure", "title": "Jenkins build failed or timed out", "keywords": "jenkins build failed failure pipeline queue timeout token authentication artifact",
+    "source_url": "https://www.jenkins.io/doc/book/using/remote-access-api/",
+    "steps": [
+      {"id": "jenkins-failure-1", "text": "Open the specific Jenkins build for this request and check its console output and result.json artifact."},
+      {"id": "jenkins-failure-2", "text": "Verify the job is named clouddesk and the API token belongs to a user permitted to build and read that job."},
+      {"id": "jenkins-failure-3", "text": "After a timeout, verify the original build has stopped before retrying. A retry creates a new plan and requires another approval."}
+    ]
+  },
+  {
+    "id": "slack-timeout", "title": "Slack command timeout", "keywords": "slack slash command timeout acknowledgement ack socket connection envelope",
+    "source_url": "https://docs.slack.dev/tools/bolt-python/concepts/acknowledge/",
+    "steps": [
+      {"id": "slack-timeout-1", "text": "Acknowledge Slack interactions within three seconds; provisioning and model calls belong in the background worker."},
+      {"id": "slack-timeout-2", "text": "Check the Socket Mode bridge is running and its local bridge token matches the backend configuration."},
+      {"id": "slack-timeout-3", "text": "Verify the app is installed in the configured workspace and has commands and chat:write bot scopes."}
+    ]
+  },
+  {
+    "id": "duplicate", "title": "Duplicate requests and conflicting keys", "keywords": "duplicate request retry idempotency key conflict repeated submitted",
+    "source_url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+    "steps": [
+      {"id": "duplicate-1", "text": "Reuse the same Idempotency-Key when retrying the same creation payload after a network interruption."},
+      {"id": "duplicate-2", "text": "A repeated key with the same payload returns the existing request; a different payload with that key is rejected with HTTP 409."},
+      {"id": "duplicate-3", "text": "Use a new key only for an intentionally new sandbox. Inspect the audit trail before approving another request."}
+    ]
+  },
+  {
+    "id": "cleanup", "title": "Expired sandbox cleanup failed", "keywords": "expired sandbox ttl cleanup delete destroy failed bucket resources retry scheduled",
+    "source_url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html",
+    "steps": [
+      {"id": "cleanup-1", "text": "Check the request expiry time and whether its status is DESTROY_QUEUED, DESTROYING, CLEANUP_FAILED, or DESTROYED."},
+      {"id": "cleanup-2", "text": "Inspect the worker/provider logs. API mode removes objects before deleting its owned bucket and then removes its scoped IAM role."},
+      {"id": "cleanup-3", "text": "Cleanup retries automatically up to five attempts. If exhausted, use the cleanup action after correcting the local provider problem."}
+    ]
+  },
+  {
+    "id": "approval", "title": "Approval denied or plan changed", "keywords": "approval approver unauthorized forbidden role plan digest changed mismatch denied",
+    "source_url": "https://developer.hashicorp.com/terraform/tutorials/cli/plan",
+    "steps": [
+      {"id": "approval-1", "text": "Use an approver API token or a Slack user ID explicitly listed in CLOUDDESK_SLACK_APPROVERS."},
+      {"id": "approval-2", "text": "Refresh the request and inspect its current plan digest before approving; a stale digest is rejected."},
+      {"id": "approval-3", "text": "Approval is allowed only in AWAITING_APPROVAL. Failed provisioning must be replanned and approved again."}
+    ]
+  },
+  {
+    "id": "terraform", "title": "Terraform init, plan, or apply failed", "keywords": "terraform init provider download lock plan apply failed stale state configuration",
+    "source_url": "https://developer.hashicorp.com/terraform/cli/commands/plan",
+    "steps": [
+      {"id": "terraform-1", "text": "Check the request-specific last-error.log in the local Terraform work directory and confirm the Moto endpoint is reachable."},
+      {"id": "terraform-2", "text": "Run terraform version and verify provider downloads are allowed. CloudDesk requires Terraform 1.13.5 or later within the 1.x series."},
+      {"id": "terraform-3", "text": "Never regenerate a plan inside the apply step. Replan through CloudDesk and review the new saved-plan digest."}
+    ]
+  },
+  {
+    "id": "model", "title": "Local model unavailable", "keywords": "ollama local model unavailable inference connection memory assistant fallback grounded",
+    "source_url": "https://docs.ollama.com/api/chat",
+    "steps": [
+      {"id": "model-1", "text": "Check Ollama is running locally and the model listed in CLOUDDESK_OLLAMA_MODEL has been downloaded."},
+      {"id": "model-2", "text": "If the model is unavailable, CloudDesk returns retrieved runbook steps and explicitly labels the response as extractive fallback."},
+      {"id": "model-3", "text": "The assistant selects existing runbook step IDs. It has no infrastructure execution tools and cannot approve or provision resources."}
+    ]
+  }
+]

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CloudDesk: approval-based infrastructure automation, runbook troubleshooting, and incident replay.">
+  <meta name="theme-color" content="#183b32">
+  <title>CloudDesk · Infrastructure, thoughtfully automated</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <aside class="sidebar">
+    <a class="brand" href="#overview"><span class="brand-mark">c<span>·</span></span><span>CloudDesk<small>INFRASTRUCTURE WORKSPACE</small></span></a>
+    <div class="workspace-label"><span class="online-dot"></span> Portfolio workspace <span class="tiny-tag">LOCAL</span></div>
+    <nav aria-label="Main navigation">
+      <button class="nav active" data-page="overview"><span class="nav-symbol">▦</span> Overview</button>
+      <button class="nav" data-page="requests"><span class="nav-symbol">⇄</span> Sandbox requests <span id="pending-count" class="nav-count">0</span></button>
+      <button class="nav" data-page="assistant"><span class="nav-symbol">✧</span> Runbook assistant</button>
+      <button class="nav" data-page="lab"><span class="nav-symbol">⚑</span> Incident lab</button>
+      <button class="nav" data-page="audit"><span class="nav-symbol">≡</span> Audit trail</button>
+      <div class="nav-divider"></div>
+      <button class="nav" data-page="setup"><span class="nav-symbol">⌘</span> Integrations & setup</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="shield-icon">✓</div><strong>Small scope. Clear ownership.</strong><p>Every resource has a request, an approval, and an expiry.</p><button id="reset-demo" class="text-button">Reset demonstration ↻</button></div>
+    <div class="profile"><div class="avatar">CD</div><div><strong id="profile-role">Demo approver</strong><small id="profile-mode">Browser demonstration</small></div><button id="connection-button" aria-label="Connection settings">⚙</button></div>
+  </aside>
+  <div class="shell">
+    <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong id="page-name">Overview</strong></div><div class="top-actions"><span id="connection-label" class="connection-label"><span class="online-dot"></span> Browser demo</span><button id="role-button" class="button secondary small">Role: approver</button><button class="button primary small new-request">+ New request</button></div></header>
+    <div id="mode-banner" class="mode-banner"><span class="banner-dot"></span><strong>Interactive demonstration</strong><span>Everything here is simulated in your browser. No cloud resources or paid APIs are used.</span></div>
+    <main id="main" tabindex="-1"></main>
+    <footer>CloudDesk <span>·</span> An API-first infrastructure project <a id="repo-link" href="#setup">Explore the project ↗</a></footer>
+  </div>
+  <dialog id="request-dialog"><form id="request-form"><div class="dialog-head"><div><span class="eyebrow">SELF-SERVICE INFRASTRUCTURE</span><h2>Request a sandbox</h2></div><button type="button" class="icon-button close-dialog" aria-label="Close">×</button></div><p class="muted">A private storage sandbox, with scoped access and automatic expiry.</p><label>Sandbox name<input name="slug" required minlength="3" maxlength="30" pattern="[a-z][a-z0-9\-]{2,29}" placeholder="analytics-lab" autocomplete="off"><small>3–30 lowercase letters, numbers, or hyphens. Start with a letter.</small></label><label>Lifetime<select name="ttl"><option value="1">1 minute · quick expiry demo</option><option value="15">15 minutes</option><option value="30" selected>30 minutes</option><option value="60">1 hour</option><option value="120">2 hours · maximum</option></select></label><label>Purpose<textarea name="reason" required minlength="3" maxlength="300" placeholder="Test a data ingestion workflow"></textarea></label><div class="callout"><span>✓</span><div><strong>Approval required</strong><p>You can review the resource plan before any infrastructure changes.</p></div></div><p id="form-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" class="button secondary close-dialog">Cancel</button><button type="submit" class="button primary">Create request →</button></div></form></dialog>
+  <dialog id="detail-dialog"><div id="detail-content"></div></dialog>
+  <dialog id="connection-dialog"><form id="connection-form"><div class="dialog-head"><div><span class="eyebrow">LOCAL BACKEND</span><h2>Connect your workspace</h2></div><button type="button" class="icon-button close-dialog" aria-label="Close">×</button></div><p class="muted">API tokens are kept in memory for this tab only. This interface connects only to a backend served from the same origin.</p><label>Requester API token<input type="password" name="requester" autocomplete="off" minlength="24"></label><label>Approver API token<input type="password" name="approver" autocomplete="off" minlength="24"></label><p class="muted small-text">Create your own credentials with <code>python scripts/bootstrap.py</code>. On GitHub Pages, use the browser demonstration instead.</p><p id="connection-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" id="use-demo" class="button secondary">Use browser demo</button><button class="button primary" type="submit">Connect →</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
